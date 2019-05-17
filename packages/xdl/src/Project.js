@@ -2175,6 +2175,11 @@ export async function startAsync(
   } else {
     await startExpoServerAsync(projectRoot);
     await startReactNativeServerAsync(projectRoot, options, verbose);
+
+    let { exp } = await ProjectUtils.readConfigJsonAsync(projectRoot);
+    if (exp['platforms'].includes('web')) {
+      await Webpack.startAsync(projectRoot, options, verbose);
+    }
   }
 
   if (!Config.offline) {
